@@ -3,7 +3,7 @@ class User < ApplicationRecord
     
     #FIGVAPEBR
     validates :password, length: {minimum: 6, allow_nil: true}
-    validates :username, :session_token, presence: true, unique: true
+    validates :username, :session_token, presence: true, uniqueness: true
     validates :password_digest, presence: true
 
     attr_reader :password
@@ -38,6 +38,11 @@ class User < ApplicationRecord
         self.save!
         self.session_token
     end
+
+    has_many :subs,
+        primary_key: :id,
+        foreign_key: :user_id,
+        class_name: :Sub
 
     private
     def generate_session_token
